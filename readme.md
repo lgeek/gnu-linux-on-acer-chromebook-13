@@ -41,7 +41,7 @@ The WIFIVERSION variable is required to build the drivers in `drivers/net/wirele
 
 Set `Device Drivers > Generic Driver Options > External firmware blobs to build into the kernel binary` to `nvidia/tegra124/xusb.bin`.
 
-Change any other required settings.
+Change any other required settings. I've had some issues with HDCP negociation timing out when connecting a HDMI monitor, I would recommend disabling it.
 
 Now the kernel can be built:
 
@@ -96,4 +96,5 @@ Misc notes
 * WiFi seems to occasionally disconnect when idle for a long time if [NetworkManager](https://wiki.gnome.org/Projects/NetworkManager) is used, [wicd](http://wicd.sourceforge.net/) seems reliable. Older version of the mwifiex driver (including the one shipped with my device) crash when NetworkManager manages the `uap0` device.
 * OpenGL and XV hardware acceleration work correctly with the kernel interfaces exposed by the Chrome OS kernel; I have not yet tested CUDA.
 * The Chromebook's keyboard has a slightly different layout compared to standard keyboards: the function keys (from *Back* to *Volume Up*) map to F1 to F10 and there are no F11 and F12 keys, so any standard shortcuts using these keys must be remapped. There are no Insert, Delete, Home, End, Page Up and Page Down keys, which takes a while to get used to.
+* The Tegra K1 SoC in my Chromebook is a lower speed grade than the one used by [Jetson TK1](https://developer.nvidia.com/jetson-tk1), the maximum core frequency allowed by this kernel is 2.01 GHz.
 
