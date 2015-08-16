@@ -48,10 +48,20 @@ Now the kernel can be built:
     WIFIVERSION=-3.8 ARCH=arm CROSS_COMPILE=arm-none-eabi- make zImage
     WIFIVERSION=-3.8 ARCH=arm CROSS_COMPILE=arm-none-eabi- make modules
 
+If the build fails because of compiler warnings treated as errors (happens especially when you enable additional options in the kernel config), disable ``CONFIG_ERROR_ON_WARNING`` (*Kernel hacking -> Treat compiler warnings as errors* in `menuconfig`).
+
 Build the DTB file:
 
-    WIFIVERSION=-3.8 ARCH=arm CROSS_COMPILE=/usr/bin/arm-none-eabi- make tegra124-nyan-big.dtb
-    
+    WIFIVERSION=-3.8 ARCH=arm CROSS_COMPILE=/usr/bin/arm-none-eabi- make tegra124-nyan-big-<board revision>.dtb
+
+Available board revisions can be seen using the command
+
+    ls arch/arm/boot/dts/tegra124-nyan-big-*.dts
+
+To find out which one your device has, run the following command in the Chrome OS shell:
+
+    cat /proc/device-tree/model
+
 Build a Flattened Image Tree using the configuration file I provide:
 
     wget https://raw.githubusercontent.com/lgeek/gnu-linux-on-acer-chromebook-13/master/nyan-big-fit.cfg
@@ -60,7 +70,8 @@ Build a Flattened Image Tree using the configuration file I provide:
 Create a bootable vboot image:
 
     echo "root=/dev/mmcblk1p2 rootwait rw noinitrd" > ./cmdline
-    vbutil_kernel --arch arm --pack kernel.bin --keyblock <PATH TO KEYBLOCK> --signprivate <PATH TO PRIVATE KEY> --version 1 --config cmdline --vmlinuz nyan-big-kernel
+    echo blah > dummy.txt
+    vbutil_kernel --arch arm --pack kernel.bin --keyblock <PATH TO KEYBLOCK> --signprivate <PATH TO PRIVATE KEY> --version 1 --config cmdline --vmlinuz nyan-big-kernel --bootloader dummy.txt
 
 
 Partition an SD card
