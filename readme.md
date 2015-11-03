@@ -8,7 +8,7 @@ Build system: install cgpt, uboot-tools, vboot-utils and Chrome OS developer key
 
 To build on a platform other than ChromeOS, a cross-compilation toolchain for ARM is required. In Debian based systems this toolchain is bundled in the package `gcc-arm-none-eabi`.
 
-Other packages to install on Debian based systems: `u-boot-tools`; `device-tree-compiler`.
+Other packages to install on Debian based systems: `u-boot-tools`; `vboot-utils`; `device-tree-compiler`.
 
 
 Developer mode on Chromebook
@@ -72,6 +72,11 @@ Now use your board revision number to build the DTB file:
 Build a Flattened Image Tree using the configuration file I provide:
 
     wget https://raw.githubusercontent.com/lgeek/gnu-linux-on-acer-chromebook-13/master/nyan-big-fit.cfg
+
+Open the `nyan-big-fit.cfg` with your favourite text editor and in line 19 replace the path to the DTB file by the one you just created, e.g. "arch/arm/boot/dts/tegra124-nyan-big-rev3_7.dtb".
+
+Now build the Flattened Image Tree:
+
     mkimage -f nyan-big-fit.cfg nyan-big-kernel
     
 Create a bootable vboot image:
