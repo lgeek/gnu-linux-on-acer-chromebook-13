@@ -8,7 +8,7 @@ Build system: install cgpt, uboot-tools, vboot-utils and Chrome OS developer key
 
 To build on a platform other than ChromeOS, a cross-compilation toolchain for ARM is required. In Debian based systems this toolchain is bundled in the package `gcc-arm-none-eabi`.
 
-Other packages to install on Debian based systems: `u-boot-tools`; `vboot-utils`; `device-tree-compiler`.
+Other packages to install on Debian based systems: `u-boot-tools`; `vboot-kernel-utils`; `device-tree-compiler`.
 
 
 Developer mode on Chromebook
