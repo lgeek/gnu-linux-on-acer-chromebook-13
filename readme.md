@@ -4,7 +4,7 @@ GNU/Linux on Acer Chromebook 13 (aka CB5-311 or nyan-big)
 Prerequisites
 -------------
 
-Build system: install cgpt, uboot-tools, vboot-utils and Chrome OS developer keys (vboot-kernel-utils / chromeos-devkeys / etc) and a cross-compilation toolchain for ARM if building on another platform.
+Build system: install dtc (device-tree-compiler), cgpt, uboot-tools, vboot-utils and Chrome OS developer keys (vboot-kernel-utils / chromeos-devkeys / etc) and a cross-compilation toolchain for ARM if building on another platform.
 
 
 Developer mode on Chromebook
