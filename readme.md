@@ -52,17 +52,20 @@ Now the kernel can be built:
 
 If the build fails because of compiler warnings treated as errors (happens especially when you enable additional options in the kernel config), disable ``CONFIG_ERROR_ON_WARNING`` (*Kernel hacking -> Treat compiler warnings as errors* in `menuconfig`).
 
-Build the DTB file:
+Build the DTB file
+------------------
 
-    WIFIVERSION=-3.8 ARCH=arm CROSS_COMPILE=/usr/bin/arm-none-eabi- make tegra124-nyan-big-<board revision>.dtb
-
-Available board revisions can be seen using the command
-
-    ls arch/arm/boot/dts/tegra124-nyan-big-*.dts
-
-To find out which one your device has, run the following command in the Chrome OS shell:
+Start by identifying the board revision to which your device correspondes. Run the following command in the Chrome OS shell:
 
     cat /proc/device-tree/model
+    
+You can check that your board revision is supported by using this command in the build system:
+
+    ls arch/arm/boot/dts/tegra124-nyan-big-*.dts
+    
+Now use your board revision number to build the DTB file:
+
+    WIFIVERSION=-3.8 ARCH=arm CROSS_COMPILE=/usr/bin/arm-none-eabi- make tegra124-nyan-big-<board revision>.dtb
 
 Build a Flattened Image Tree using the configuration file I provide:
 
