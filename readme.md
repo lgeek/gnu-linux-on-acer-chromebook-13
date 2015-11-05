@@ -98,14 +98,39 @@ Replace these paths in the commands below to obtain the bootable image:
     vbutil_kernel --arch arm --pack kernel.bin --keyblock <PATH TO KEYBLOCK> --signprivate <PATH TO PRIVATE KEY> --version 1 --config cmdline --vmlinuz nyan-big-kernel --bootloader dummy.txt
 
 
-Partition an SD card
---------------------
+Partition the SD card
+---------------------
+
+Two partitions must be created in the SD card, one for the kernel image and a second for the rootfs:
 
     sudo cgpt create <MMC BLOCK DEVICE>
     sudo cgpt add -b 34 -s 32768 -P 1 -S 1 -t kernel <MMC BLOCK DEVICE> # 16 MB kernel image partition
+    
+To fully use the remainder of the SD card with the second partition a few calculation must be made. To know how many sectors the SD card has use the command:
+
+    sudo cgpt show <MMC BLOCK DEVICE>
+    
+It should proivde an output like:
+
+
+           start        size    part  contents
+               0           1          PMBR
+               1           1          Pri GPT header
+               2          32          Pri GPT table
+              34       32768       1  Label: ""
+                                      Type: ChromeOS kernel
+                                      UUID: C2CC569B-1773-E94B-8504-E7026B4659C9
+                                      Attr: priority=1 tries=0 successful=1
+        60367839          32          Sec GPT table
+        60367871           1          Sec GPT header
+
+The exact number of sectors available equals the start of the secondary table minus the size of this first partition minus the size of the primary table. In this example it is: 60367839 - 32768 - 34 = 60335037. 
+
+You may now use this figure to create the rootfs partition:
+    
     sudo cgpt add -b 32802 -s <ROOT PARTITION SIZE in 512B sectors> -t rootfs <MMC BLOCK DEVICE>
     
-cgpt doesn't seem to create a protective MBR. If one is not already in place, it can be created with:
+`cgpt` does not seem to create a protective MBR. If one is not already in place, it can be created with:
 
     sudo gdisk <MMC BLOCK DEVICE> # and enter command w
 
