@@ -79,7 +79,15 @@ Now build the Flattened Image Tree:
 
     mkimage -f nyan-big-fit.cfg nyan-big-kernel
     
-Create a bootable vboot image:
+Create a bootable vboot image
+-----------------------------
+
+A bootable image must now be generated using the vboot toolkit. To do you must locate the kernel key block (<PATH TO KEYBLOCK> below) and the private key (<PATH TO PRIVATE KEY>) installed with `vboot`. In Debian based systems these keys are found at:
+
+ - /usr/share/vboot/devkeys/kernel.keyblock (<PATH TO KEYBLOCK>)
+ - /usr/share/vboot/devkeys/kernel_data_key.vbprivk (<PATH TO PRIVATE KEY>)
+
+Replace these paths in the commands below to obtain the bootable image:
 
     echo "root=/dev/mmcblk1p2 rootwait rw noinitrd" > ./cmdline
     echo blah > dummy.txt
