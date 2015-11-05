@@ -75,17 +75,17 @@ Build a Flattened Image Tree using the configuration file I provide:
 
 Open the `nyan-big-fit.cfg` with your favourite text editor and in line 19 replace the path to the DTB file by the one you just created, e.g. "arch/arm/boot/dts/tegra124-nyan-big-rev3_7.dtb".
 
-Now build the Flattened Image Tree:
+Finally, build the Flattened Image Tree:
 
     mkimage -f nyan-big-fit.cfg nyan-big-kernel
     
 Create a bootable vboot image
 -----------------------------
 
-A bootable image must now be generated using the vboot toolkit. To do you must locate the kernel key block (<PATH TO KEYBLOCK> below) and the private key (<PATH TO PRIVATE KEY>) installed with `vboot`. In Debian based systems these keys are found at:
+A bootable image must now be generated using the vboot toolkit. To do you must locate the kernel key block (`<PATH TO KEYBLOCK>` below) and the private key (`<PATH TO PRIVATE KEY>`) installed with `vboot`. In Debian based systems these keys are found at:
 
- - /usr/share/vboot/devkeys/kernel.keyblock (<PATH TO KEYBLOCK>)
- - /usr/share/vboot/devkeys/kernel_data_key.vbprivk (<PATH TO PRIVATE KEY>)
+ - /usr/share/vboot/devkeys/kernel.keyblock (`<PATH TO KEYBLOCK>`)
+ - /usr/share/vboot/devkeys/kernel_data_key.vbprivk (`<PATH TO PRIVATE KEY>`)
 
 Replace these paths in the commands below to obtain the bootable image:
 
