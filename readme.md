@@ -4,16 +4,16 @@ GNU/Linux on Acer Chromebook 13 (aka CB5-311 or nyan-big)
 Prerequisites
 -------------
 
-Build system: install cgpt, uboot-tools, vboot-utils and Chrome OS developer keys (vboot-kernel-utils / chromeos-devkeys / etc).
+The following tools are required in the build system: install cgpt, uboot-tools, vboot-utils and Chrome OS developer keys (vboot-kernel-utils / chromeos-devkeys / etc).
 
-In Debian based systems, this corresponds to the following packages: 
+To build on a platform other than ChromeOS, in addition a cross-compilation toolchain for ARM is required.
+
+In Debian based systems, these requirements correspond to the following packages: 
 - `u-boot-tools` 
 - `vboot-kernel-utils`
 - `device-tree-compiler`
-- `cgpt`.
-
-To build on a platform other than ChromeOS, in addition a cross-compilation toolchain for ARM is required. In Debian based systems this toolchain is bundled in the package `gcc-arm-none-eabi`.
-
+- `cgpt`
+- `gcc-arm-none-eabi`
 
 Developer mode on Chromebook
 ----------------------------
@@ -51,7 +51,7 @@ Set `Device Drivers > Generic Driver Options > External firmware blobs to build 
 
 Change any other required settings. I've had some issues with HDCP negociation timing out when connecting a HDMI monitor, I would recommend disabling it.
 
-Now the kernel can be built:
+Now the kernel can now be built:
 
     WIFIVERSION=-3.8 ARCH=arm CROSS_COMPILE=arm-none-eabi- make zImage
     WIFIVERSION=-3.8 ARCH=arm CROSS_COMPILE=arm-none-eabi- make modules
@@ -86,7 +86,7 @@ Finally, build the Flattened Image Tree:
 Create a bootable vboot image
 -----------------------------
 
-A bootable image must now be generated using the vboot toolkit. To do you must locate the kernel key block (`<PATH TO KEYBLOCK>` below) and the private key (`<PATH TO PRIVATE KEY>`) installed with `vboot`. In Debian based systems these keys are found at:
+A bootable image must now be generated using the vboot toolkit. To do so you must locate the kernel key block (`<PATH TO KEYBLOCK>` below) and the private key (`<PATH TO PRIVATE KEY>`) installed with `vboot`. In Debian based systems these keys are found at:
 
  - /usr/share/vboot/devkeys/kernel.keyblock (`<PATH TO KEYBLOCK>`)
  - /usr/share/vboot/devkeys/kernel_data_key.vbprivk (`<PATH TO PRIVATE KEY>`)
@@ -106,12 +106,11 @@ Two partitions must be created in the SD card, one for the kernel image and a se
     sudo cgpt create <MMC BLOCK DEVICE>
     sudo cgpt add -b 34 -s 32768 -P 1 -S 1 -t kernel <MMC BLOCK DEVICE> # 16 MB kernel image partition
     
-To fully use the remainder of the SD card with the second partition a few calculation must be made. To know how many sectors the SD card has use the command:
+To fully use the remainder of the SD card with the second partition a few calculations must be made. To know how many sectors the SD card has left, use the command:
 
     sudo cgpt show <MMC BLOCK DEVICE>
     
-It should proivde an output like:
-
+It should provide an output like:
 
            start        size    part  contents
                0           1          PMBR
@@ -124,7 +123,7 @@ It should proivde an output like:
         60367839          32          Sec GPT table
         60367871           1          Sec GPT header
 
-The exact number of sectors available equals the start of the secondary table minus the size of this first partition minus the size of the primary table. In this example it is: 60367839 - 32768 - 34 = 60335037. 
+The exact number of sectors available equals the start of the secondary table minus the size of the first partition minus the size of the primary table. In this example it is: 60367839 - 32768 - 34 = 60335037. 
 
 You may now use this figure to create the rootfs partition:
     
